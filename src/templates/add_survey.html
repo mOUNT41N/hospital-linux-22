@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>添加随访记录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<script>
+    function fuzzysearch() {
+        {
+            var cusname = $('#names').val();
+            console.log(cusname)
+            $.ajax
+            ({
+                url: "/add_survey/fuzzysearch/",
+                dataType: "json",
+                type: "post",
+                data: {
+                    cusname: cusname
+                },
+                success: function (res) {
+                    // console.log(res);  //在console中查看数据
+                    showCusnames(res);
+
+                },
+                error: function () {
+                    console.log("error")
+                }
+            });
+        }
+    };
+
+
+    function getDocter() {
+        {
+            var cusname = $('#names').val();
+            $.ajax
+            ({
+                url: "/get_docter/",
+                dataType: "json",
+                type: "post",
+                success: function (docter_name) {
+                    for (var i = 0; i < docter_name.length; i++) {
+                        $("#docters").append('<option value="' + docter_name[i].docter_name + '"></option>');
+                    }
+                },
+                error: function () {
+                    console.log("error")
+                }
+            });
+        }
+    };
+
+    function getCustomer() {
+        {
+            $.ajax
+            ({
+                url: "/get_customer/",
+                dataType: "json",
+                type: "post",
+                success: function (customer_name) {
+                    // console.log(customer_name);  //在console中查看数据
+                    for (var i = 0; i < customer_name.length; i++) {
+                        $("#customer_names").append('<option value="' + customer_name[i] + '"></option>');
+                    }
+                },
+                error: function () {
+                    console.log("error")
+                }
+            });
+        }
+    };
+
+    function getPhone() {
+        {
+            var cusname = $('#names').val();
+            $.ajax
+            ({
+                url: "/get_phone/",
+                dataType: "json",
+                type: "post",
+                data: {
+                    cusname: cusname
+                },
+                success: function (customer_phone) {
+//                    console.log("phone:", customer_phone);  //在console中查看数据
+                    document.getElementById("phone").value = "";
+                    var parent = $("#customer_phones")[0];
+                    var childArray = parent.children;
+                    var len = childArray.length;
+//				console.log("parent",parent)
+                    while (len > 0) {
+                        len--;
+                        parent.removeChild(childArray[len]);
+                    }
+                    for (var i = 0; i < customer_phone.length; i++) {
+                        $("#customer_phones").append('<option value="' + customer_phone[i] + '"></option>');
+                    }
+                },
+                error: function () {
+                    console.log("error")
+                }
+            });
+        }
+    };
+
+    function getIdnumbers() {
+        {
+            var cusname = $('#names').val();
+            $.ajax
+            ({
+                url: "/get_idnumbers/",
+                dataType: "json",
+                type: "post",
+                data: {
+                    cusname: cusname
+                },
+                success: function (id_numbers) {
+                    console.log(id_numbers);  //在console中查看数据
+                    document.getElementById("id_number").value = "";
+                    var parent = $("#idnumbers")[0];
+                    var childArray = parent.children;
+                    var len = childArray.length;
+                    $("#idnumbers")
+
+                    while (len > 0) {
+                        len--;
+                        parent.removeChild(childArray[len]);
+                    }
+                    for (var i = 0; i < id_numbers.length; i++) {
+                        $("#idnumbers").append('<option value="' + id_numbers[i] + '"></option>');
+                    }
+                },
+                error: function () {
+                    console.log("error")
+                }
+            });
+        }
+    };
+
+</script>
+
+
+<body onload="getDocter();getCustomer();">
+<!--<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" >-->
+<nav class="navbar navbar-inverse" role="navigation" class="navbar-collapse" style="text-align:center;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">北京中医药大学东直门医院</a>
+        </div>
+        <div class="navbar-collapse" style="text-align:center;">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">提醒</a></li>
+                <li><a href="/add_survey/">添加随访</a></li>
+                <li><a href="/surveys/">已有随访</a></li>
+                <li><a href="/statistic/">统计功能</a></li>
+                <li><a href="/upload_pdf/">发布推送 </a></li>
+                <li><a href="/docter/">医生管理</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div>
+        <form method="post" action="/add_survey/">
+            <!--      <h1 class="h3 mb-3 font-weight-normal">北京中医药中医药大学</h1>-->
+            <h1 class="h3 mb-3 font-weight-normal">请输入本次随访信息</h1>
+            <label class="sr-only">患者姓名</label>
+            <input id="names" name="name" onchange="getIdnumbers();getPhone();" type="text" class="form-control"
+                   placeholder="姓名" list="customer_names" style="width: 50%" required
+                   autofocus>
+            <datalist id="customer_names"></datalist>
+
+            <label class="sr-only">生日</label>
+            <input id="id_number" name="id_number" type="text" pattern="^[0-9]{8}|{19}$" class="form-control"
+                   placeholder="生日" list="idnumbers" style="width: 50%"
+                   required autofocus>
+            <datalist id="idnumbers"></datalist>
+
+            <label class="sr-only">电话</label>
+            <input id="phone" name="phone" type="text" class="form-control" placeholder="电话"
+                   list="customer_phones" style="width: 50%" required autofocus>
+            <datalist id="customer_phones"></datalist>
+
+            <input name="docter_name" type="text" class="form-control" placeholder="医生" list="docters"
+                   style="width: 50%" required
+                   autofocus>
+            <datalist id="docters">
+
+            </datalist>
+            <label class="sr-only" >这次随访时间</label>
+            <span class="input-group-addon" style="width: 35%">这次随访时间：</span>
+            <input id="times" name="time" type="datetime-local" class="form-control" style="width: 50%"
+                   required autofocus>
+            <label class="sr-only">下次随访时间</label>
+            <span class="input-group-addon" style="width: 35%">下次随访时间：</span>
+            <input id="times2" name="time2" type="datetime-local" class="form-control" style="width: 50%"
+                   required autofocus>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" style="width: 50%">提交</button>
+            <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+        </form>
+    </div>
+</div>
+</body>
+</html>
