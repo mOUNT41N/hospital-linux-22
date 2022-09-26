@@ -29,7 +29,7 @@ import questions
 import sms
 import zipfile
 # import codecs
-from utility import require_login, md5_hash
+from utility import require_login, md5_hash,require_doc_permit
 from urllib.parse import quote
 import os
 
@@ -136,14 +136,23 @@ def login():
                 app.config["SU_PASSWD"]):
             session["username"] = request.form["username"]
             return redirect("/")
+        elif request.form["username"] == "tempdoc" and request.form['passwd'] == md5_hash('tempdoc'):
+            session["username"] = request.form['username']
+            return redirect("/")
         else:
             return redirect("/login/")
+@app.route('/logout/', methods=["get", "post"])
+def logout():
+    session["username"] = None
+    return redirect("/login/")
+
 
 
 # 添加一条随访记录 姓名,身份证号,电话,第几次随访,时间戳(自动插入)
 # 需求添加2021 10 11 录入界面，添加随访方面简化，以姓名作为首要条件，重名患者身份证号，电话辅助识别，随访次数系统自动生成
 @app.route('/add_survey/', methods=["get", "post"])
 @require_login
+@require_doc_permit
 def add_survey():
     if request.method == "GET":
         return render_template("add_survey.html")

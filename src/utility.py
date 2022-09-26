@@ -11,6 +11,15 @@ def require_login(func):
         return func(*args, **kwargs)
     return wrapper
 
+# 权限装饰器
+def require_doc_permit(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        user_list = ['admin']
+        if session['username'] not in user_list:
+            return redirect("/")
+        return func(*args, **kwargs)
+    return wrapper
 
 def md5_hash(string):
     m = hashlib.md5()
