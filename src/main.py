@@ -588,6 +588,7 @@ def history_charts(name_id, survey_id):
 # 导出勾选随访
 @app.route('/download/partsurveys/', methods=['GET', 'POST'])
 @require_login
+@require_doc_permit
 def partsurveys_download():
     # with db.cur() as cursor:
     #     sql = "select id, name, sequence from suifang"
@@ -956,10 +957,11 @@ def user_table():
     for item in data:
         permit = item['user_permit']
         permit_type = ""
-        if permit & 1 == 1:
+        if (permit & 1) == 1:
             permit_type += "导入"
-        if permit & 2 == 1:
+        if (permit & 2) == 2:
             permit_type += " 导出"
+        print(permit_type)
         item['user_permit'] = permit_type
     return render_template("user.html", data=data)
 
