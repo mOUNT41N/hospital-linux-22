@@ -22,14 +22,14 @@
         </div>
         <div class="navbar-collapse" style="text-align:center;">
             <ul class="nav navbar-nav">
-                <li><a href="/">提醒</a></li>
+                <li class="active"><a href="/">提醒</a></li>
                 <li><a href="/add_survey/">添加随访</a></li>
                 <li><a href="/surveys/">已有随访</a></li>
                 <li><a href="/statistic/">统计功能</a></li>
                 <li><a href="/upload_pdf/">发布推送</a></li>
                 <li><a href="/docter/">医生管理</a></li>
+                <li><a href="/user/">用户管理</a></li>
                 <li><a href="/logout/">注销</a></li>
-                >
             </ul>
         </div>
     </div>
@@ -41,7 +41,7 @@
             <tbody>
             <thead>
             <tr>
-<!--                <th>随访ID</th>-->
+                <!--                <th>随访ID</th>-->
                 <th>患者姓名</th>
                 <th>患者生日</th>
                 <th>随访次序</th>
@@ -51,15 +51,15 @@
             </tr>
             </thead>
             {% for item in data %}
-                <tr>
-<!--                    <td>{{ item["id"] }}</td>-->
-                    <td>{{ item["name"] }}</td>
-                    <td>{{ item["id_number"][0:8] }}</td>
-                    <td>{{ item["sequence"] }}</td>
-                    <td>{{ item["time_stamp"] }}</td>
-                    <td>{{ item["time_stamp2"] }}</td>
-                    <td>{{ item["docter_name"] }}</td>
-                </tr>
+            <tr>
+                <!--                    <td>{{ item["id"] }}</td>-->
+                <td>{{ item["name"] }}</td>
+                <td>{{ item["id_number"][0:8] }}</td>
+                <td>{{ item["sequence"] }}</td>
+                <td>{{ item["time_stamp"] }}</td>
+                <td>{{ item["time_stamp2"] }}</td>
+                <td>{{ item["docter_name"] }}</td>
+            </tr>
             {% endfor %}
             </tbody>
         </table>

@@ -26,8 +26,8 @@
                 <li><a href="/surveys/">已有随访</a></li>
                 <li><a href="/statistic/">统计功能</a></li>
                 <li><a href="/upload_pdf/">发布推送</a></li>
-                <li class="active"><a href="/docter/">医生管理</a></li>
-                <li><a href="/user/">用户管理</a></li>
+                <li><a href="/docter/">医生管理</a></li>
+                <li class="active"><a href="/user/">用户管理</a></li>
                 <li><a href="/logout/">注销</a></li>
             </ul>
         </div>
@@ -36,14 +36,14 @@
 
 <div class="contanier">
     <div>
-        <form method="post" style=" width:300px; margin: 10% auto auto;" action="/docter/add/">
+        <form method="post" style=" width:300px; margin: 10% auto auto;" action="/user/add/">
             <!--      <h1 class="h3 mb-3 font-weight-normal">北京中医药中医药大学</h1>-->
-            <h1 class="h3 mb-3 font-weight-normal">请输入医生姓名和联系方式</h1>
-            <label class="sr-only">医生姓名</label>
-            <input id="docter_name" name="docter_name" type="text" class="form-control" placeholder="姓名" required
+            <h1 class="h3 mb-3 font-weight-normal">请输入用户名及密码</h1>
+            <label class="sr-only">用户名</label>
+            <input id="user_id" name="user_id" type="text" class="form-control" placeholder="用户名" required
                    autofocus>
-            <label class="sr-only">电话</label>
-            <input id="docter_phone" name="docter_phone" type="text" class="form-control" placeholder="电话"
+            <label class="sr-only">密码</label>
+            <input id="user_pwd" name="user_pwd" type="text" class="form-control" placeholder="密码"
                    required autofocus>
             <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">提交</button>
             <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>

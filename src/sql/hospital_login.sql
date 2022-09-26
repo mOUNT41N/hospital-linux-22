@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: hospital
+-- Host: 127.0.0.2    Database: hospital
 -- ------------------------------------------------------
 -- Server version	8.0.26
 
@@ -23,8 +23,10 @@ DROP TABLE IF EXISTS `login`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `login` (
-  `user_phone` varchar(100) DEFAULT NULL,
-  UNIQUE KEY `user_phone` (`user_phone`)
+  `user_id` varchar(100) DEFAULT NULL,
+  `user_pwd` varchar(100) DEFAULT NULL,
+  `user_permit` int DEFAULT '1',
+  UNIQUE KEY `user_phone` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -37,4 +39,4 @@ CREATE TABLE `login` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-28 12:43:12
+-- Dump completed on 2022-09-26 15:11:46

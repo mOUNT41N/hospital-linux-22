@@ -29,7 +29,7 @@ import questions
 import sms
 import zipfile
 # import codecs
-from utility import require_login, md5_hash,require_doc_permit
+from utility import require_login, md5_hash, require_doc_permit
 from urllib.parse import quote
 import os
 
@@ -132,20 +132,31 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
     else:
+        username = request.form["username"]
+        pwd = request.form['passwd']
         if request.form["username"] == app.config["SU_USER"] and request.form["passwd"] == md5_hash(
                 app.config["SU_PASSWD"]):
             session["username"] = request.form["username"]
             return redirect("/")
-        elif request.form["username"] == "tempdoc" and request.form['passwd'] == md5_hash('tempdoc'):
-            session["username"] = request.form['username']
-            return redirect("/")
+        if request.form["username"] is not None and request.form['passwd'] is not None:
+            sql = "select user_id, user_pwd from login"
+            with db.cur() as cursor:
+                cursor.execute(sql)
+                data = cursor.fetchall()
+            for item in data:
+                if username == item['user_id']:
+                    if pwd == md5_hash(item['user_pwd']):
+                        session["username"] = request.form['username']
+                        return redirect("/")
+            return redirect("/login/")
         else:
             return redirect("/login/")
+
+
 @app.route('/logout/', methods=["get", "post"])
 def logout():
     session["username"] = None
     return redirect("/login/")
-
 
 
 # 添加一条随访记录 姓名,身份证号,电话,第几次随访,时间戳(自动插入)
@@ -934,6 +945,39 @@ def statistic():
 #     # 保存文件到服务器本地
 #     fp.save("a.jpg")
 #     return redirect(url_for("cms.index"))
+
+@app.route('/user/')
+@require_login
+def user_table():
+    sql = "select user_id, user_permit from login"
+    with db.cur() as cursor:
+        cursor.execute(sql)
+        data = cursor.fetchall()
+    for item in data:
+        permit = item['user_permit']
+        permit_type = ""
+        if permit & 1 == 1:
+            permit_type += "导入"
+        if permit & 2 == 1:
+            permit_type += " 导出"
+        item['user_permit'] = permit_type
+    return render_template("user.html", data=data)
+
+
+@app.route('/user/add/', methods=['post', 'get'])
+@require_login
+@require_doc_permit
+def user_add():
+    if request.method == "GET":
+        return render_template("user_add.html")
+    if request.method == "POST":
+        # #print(request.form)
+        # return redirect("/docter/")
+        with db.cur() as cursor:
+            sql = "insert into login (user_id, user_pwd) values ('%s', '%s')"
+            cursor.execute(sql % (request.form['user_id'], request.form['user_pwd']))
+        return redirect("/user/")
+
 
 @app.route('/docter/')
 @require_login
