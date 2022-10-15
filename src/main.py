@@ -125,9 +125,10 @@ def login():
         if request.form["username"] == app.config["SU_USER"] and request.form["passwd"] == md5_hash(
                 app.config["SU_PASSWD"]):
             session["username"] = request.form["username"]
+            session['userpermit'] = 3
             return redirect("/")
         if request.form["username"] is not None and request.form['passwd'] is not None:
-            sql = "select user_id, user_pwd from login"
+            sql = "select user_id, user_pwd,user_permit from login"
             with db.cur() as cursor:
                 cursor.execute(sql)
                 data = cursor.fetchall()
@@ -135,6 +136,7 @@ def login():
                 if username == item['user_id']:
                     if pwd == md5_hash(item['user_pwd']):
                         session["username"] = request.form['username']
+                        session['userpermit'] = item['user_permit']
                         return redirect("/")
             return redirect("/login/")
         else:
@@ -946,10 +948,9 @@ def user_table():
         permit = item['user_permit']
         permit_type = ""
         if (permit & 1) == 1:
-            permit_type += "导入"
+            permit_type += "普通"
         if (permit & 2) == 2:
-            permit_type += " 导出"
-        print(permit_type)
+            permit_type += " 高级"
         item['user_permit'] = permit_type
     return render_template("user.html", data=data)
 
@@ -963,9 +964,16 @@ def user_add():
     if request.method == "POST":
         # #print(request.form)
         # return redirect("/docter/")
+        permit = request.form['user_permit']
+        user_permit = 0
+        if permit == '普通':
+            user_permit = 1
+        elif permit == '高级':
+            user_permit = 3
+        print(request.form['user_id'], permit, user_permit)
         with db.cur() as cursor:
-            sql = "insert into login (user_id, user_pwd) values ('%s', '%s')"
-            cursor.execute(sql % (request.form['user_id'], request.form['user_pwd']))
+            sql = "insert into login (user_id, user_pwd, user_permit) values ('%s', '%s','%d')"
+            cursor.execute(sql % (request.form['user_id'], request.form['user_pwd'], user_permit))
         return redirect("/user/")
 
 

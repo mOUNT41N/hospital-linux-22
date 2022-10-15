@@ -164,16 +164,17 @@
                 <li><a href="/docter/">医生管理</a></li>
                 <li><a href="/user/">用户管理</a></li>
                 <li><a href="/logout/">注销</a></li>
+                <li><a href="/surveys/">←</a></li>
             </ul>
         </div>
     </div>
 </nav>
-
+<h1 align="center">请输入本次随访信息</h1>
 <div class="container">
     <div>
         <form method="post" action="/add_survey/">
             <!--      <h1 class="h3 mb-3 font-weight-normal">北京中医药中医药大学</h1>-->
-            <h1 class="h3 mb-3 font-weight-normal">请输入本次随访信息</h1>
+<!--            <h1 class="h3 mb-3 font-weight-normal">请输入本次随访信息</h1>-->
             <label class="sr-only">患者姓名</label>
             <input id="names" name="name" onchange="getIdnumbers();getPhone();" type="text" class="form-control"
                    placeholder="姓名" list="customer_names" style="width: 50%" required

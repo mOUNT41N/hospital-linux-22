@@ -18,9 +18,8 @@ def require_login(func):
 def require_doc_permit(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        user_list = ['wangzhen', 'admin']
-        if session['username'] not in user_list:
-            return redirect("/")
+        if session['userpermit'] != 3:
+            return redirect('/')
         return func(*args, **kwargs)
 
     return wrapper

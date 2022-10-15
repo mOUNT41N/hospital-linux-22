@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>添加医生</title>
+    <title>添加用户</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -29,6 +29,7 @@
                 <li><a href="/docter/">医生管理</a></li>
                 <li class="active"><a href="/user/">用户管理</a></li>
                 <li><a href="/logout/">注销</a></li>
+                <li><a href="/user/">←</a></li>
             </ul>
         </div>
     </div>
@@ -42,9 +43,19 @@
             <label class="sr-only">用户名</label>
             <input id="user_id" name="user_id" type="text" class="form-control" placeholder="用户名" required
                    autofocus>
+
             <label class="sr-only">密码</label>
             <input id="user_pwd" name="user_pwd" type="text" class="form-control" placeholder="密码"
                    required autofocus>
+
+            <label class="sr-only">用户权限</label>
+            <input id="user_permit" name="user_permit" type="text" class="form-control"
+                   placeholder="权限" list="priority_list" style="width: 50%" required autofocus>
+            <datalist id="priority_list">
+                <option value="普通">
+                <option value="高级">
+            </datalist>
+
             <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">提交</button>
             <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
         </form>
