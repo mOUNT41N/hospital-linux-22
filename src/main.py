@@ -55,18 +55,6 @@ ALLOWED_EXTENSIONS = (['pdf'])
 def index():
     with db.cur() as cursor:
         cursor.execute("set sql_mode='';")
-        # sql = "select * from suifang"
-        # sql = '''select * from (select suifang.* from suifang join
-        # (select id_number, max(sequence) as sequence from suifang group by id_number) as last
-        # on suifang.id_number = last.id_number and suifang.sequence = last.sequence) as rst
-        # where (sequence = 1 and datediff(now(), time_stamp) > 1) or
-        # (sequence = 2 and datediff(now(), time_stamp) > 2) or (sequence = 3 and datediff(now(), time_stamp) > 3);'''
-
-        # sql = '''select * from (select suifang.* from suifang natural join
-        #         (select id_number, max(sequence) as sequence from suifang group by id_number) as last ) as rst
-        #         where (sequence = 1 and datediff(now(), time_stamp) > 1) or
-        #         (sequence = 2 and datediff(now(), time_stamp) > 2) or (sequence = 3 and datediff(now(), time_stamp) > 3);'''
-
         sql = '''select * from (select suifang.* from suifang natural join 
                         (select id_number, max(sequence) as sequence from suifang group by id_number) as last ) as rst;'''
         cursor.execute(sql)
